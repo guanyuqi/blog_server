@@ -23,7 +23,7 @@ const verifyUser = async (ctx, next) => {
     const error = new Error(errorTypes.USER_ALREADY_EXISTS);
     return ctx.app.emit("error", error, ctx);
   }
-  console.log("啦啦啦");
+
   await next();
 };
 
@@ -31,6 +31,7 @@ const verifyUser = async (ctx, next) => {
  *   密码加密
  */
 const handlePassword = async (ctx, next) => {
+  console.log(ctx.request.body.password);
   let { password } = ctx.request.body;
   ctx.request.body.password = md5password(password);
 
