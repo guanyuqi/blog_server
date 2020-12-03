@@ -12,6 +12,14 @@ const errorHandle = (error, ctx) => {
       status = 409;
       message = "已经有人捷足先登";
       break;
+    case errorTypes.USER_NOT_EXISTS:
+      status = 400;
+      message = "没有的账号你登个锤子";
+      break;
+    case errorTypes.PASSWORD_EEROR:
+      status = 400;
+      message = "密码错了!爬~";
+      break;
     default:
       status = 404;
       message = "我也不知道发生了啥错误";
