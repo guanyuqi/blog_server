@@ -1,9 +1,13 @@
+const jwt = require("jsonwebtoken");
+
 //错误常量
 const errorTypes = require("../constants/error-types");
 //导入数据库service
 const service = require("../service/user.service");
-//加密
+//md5加密
 const md5password = require("../utils/password-handle");
+//token解密
+const { PUBLIC_KEY } = require("../app/config");
 
 /**
  *   用户验证
@@ -29,7 +33,28 @@ const verifyLogin = async (ctx, next) => {
     const error = new Error(errorTypes.PASSWORD_EEROR);
     return ctx.app.emit("error", error, ctx);
   }
+  ctx.user = user;
   await next();
 };
 
-module.exports = { verifyLogin };
+/**
+ *   token验证
+ */
+const verifyAuth = async (ctx, next) => {
+  console.log("token验证");
+  const authorization = ctx.headers.authorization;
+  const token = authorization.replace("Bearer ", "");
+
+  try {
+    const result = jwt.verify(token, PUBLIC_KEY, {
+      algorithms: ["RS256"],
+    });
+  } catch {
+    let error = new Error(errorTypes.TOKEN_INVALID);
+    return ctx.app.emit("error", error, ctx);
+  }
+
+  await next();
+};
+
+module.exports = { verifyLogin, verifyAuth };

@@ -20,6 +20,10 @@ const errorHandle = (error, ctx) => {
       status = 400;
       message = "密码错了!爬~";
       break;
+    case errorTypes.TOKEN_INVALID:
+      status = 401;
+      message = "token失效,请重新登录";
+      break;
     default:
       status = 404;
       message = "我也不知道发生了啥错误";

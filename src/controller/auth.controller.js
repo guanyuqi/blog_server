@@ -1,7 +1,30 @@
+//颁发token
+const jwt = require("jsonwebtoken");
+const { PRIVATE_KEY } = require("../app/config");
+
 class AuthController {
+  /* 
+    登录
+  */
   async login(ctx, next) {
-    const { name } = ctx.request.body;
-    ctx.body = `欢迎回来,${name} 铁子~~~~`;
+    const { name, id } = ctx.user;
+    const token = jwt.sign({ name, id }, PRIVATE_KEY, {
+      expiresIn: 60 * 60 * 24,
+      algorithm: "RS256",
+    });
+
+    ctx.body = {
+      id: id,
+      name: name,
+      token: token,
+    };
+  }
+
+  /* 
+    成功
+  */
+  async success(ctx, next) {
+    ctx.body = "成功了";
   }
 }
 
