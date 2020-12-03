@@ -26,10 +26,13 @@ const errorHandle = (error, ctx) => {
       break;
     default:
       status = 404;
-      message = "我也不知道发生了啥错误";
+      message = "未知错误";
   }
   ctx.status = status;
-  ctx.body = message;
+  ctx.body = {
+    status: status,
+    errMsg: message,
+  };
 };
 
 module.exports = errorHandle;
