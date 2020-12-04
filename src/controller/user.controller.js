@@ -7,7 +7,15 @@ class UserController {
     //插入数据库
     const result = await service.create(user);
     //返回数据
-    ctx.body = result;
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: result,
+        message: "注册成功",
+      },
+    };
   }
 }
 

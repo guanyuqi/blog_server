@@ -14,9 +14,13 @@ class AuthController {
     });
 
     ctx.body = {
-      id: id,
-      name: name,
-      token: token,
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: { id: id, name: name, token: token },
+        message: "登录成功",
+      },
     };
   }
 

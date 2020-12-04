@@ -23,7 +23,6 @@ const verifyLogin = async (ctx, next) => {
     return ctx.app.emit("error", error, ctx);
   }
   //3.判断用户是否存在
-  console.log(ctx.request.body);
   const result = await service.getUserByName(name);
   const user = result[0];
 
@@ -53,7 +52,6 @@ const verifyAuth = async (ctx, next) => {
     const result = jwt.verify(token, PUBLIC_KEY, {
       algorithms: ["RS256"],
     });
-
     ctx.user = result;
     await next();
   } catch {
