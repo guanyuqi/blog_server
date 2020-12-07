@@ -2,6 +2,9 @@
 const connection = require("../app/database");
 
 class UserService {
+  /* 
+  创建用户
+   */
   async create(user) {
     const { name, password } = user;
     const statement = `INSERT INTO byusers (name,password) VALUES (?,?);`;
@@ -9,7 +12,9 @@ class UserService {
     //将user插入数据库
     return result[0];
   }
-
+  /* 
+  查询用户
+   */
   async getUserByName(name) {
     const statement = `SELECT * FROM byusers WHERE name =?`;
     const result = await connection.execute(statement, [name]);

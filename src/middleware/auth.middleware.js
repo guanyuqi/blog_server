@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 //错误常量
 const errorTypes = require("../constants/error-types");
 //导入数据库service
-const service = require("../service/user.service");
+const userService = require("../service/user.service");
+const authService = require("../service/auth.service");
 //md5加密
 const md5password = require("../utils/password-handle");
 //token解密
@@ -23,7 +24,7 @@ const verifyLogin = async (ctx, next) => {
     return ctx.app.emit("error", error, ctx);
   }
   //3.判断用户是否存在
-  const result = await service.getUserByName(name);
+  const result = await userService.getUserByName(name);
   const user = result[0];
 
   if (!user) {
@@ -31,8 +32,6 @@ const verifyLogin = async (ctx, next) => {
     return ctx.app.emit("error", error, ctx);
   }
   //4.判断密码是否正确
-  console.log(md5password(password));
-  console.log(user.password);
   if (md5password(password) !== user.password) {
     const error = new Error(errorTypes.PASSWORD_EEROR);
     return ctx.app.emit("error", error, ctx);
@@ -48,6 +47,7 @@ const verifyAuth = async (ctx, next) => {
   console.log("进入权限中间件");
   try {
     const authorization = ctx.headers.authorization;
+
     const token = authorization.replace("Bearer ", "");
     const result = jwt.verify(token, PUBLIC_KEY, {
       algorithms: ["RS256"],
@@ -60,4 +60,21 @@ const verifyAuth = async (ctx, next) => {
   }
 };
 
-module.exports = { verifyLogin, verifyAuth };
+/**
+ *   修改权限的验证
+ */
+const verifyPermission = async (ctx, next) => {
+  console.log("进入修改权限的验证中间件");
+  const { id } = ctx.user;
+  const { momentId } = ctx.params;
+  try {
+    const isPermission = await authService.checkMoment(momentId, id);
+    if (!isPermission) throw new Error();
+  } catch (err) {
+    const error = new Error(errorTypes.UNAUTHORIZATION);
+    return ctx.app.emit("error", error, ctx);
+  }
+  await next();
+};
+
+module.exports = { verifyLogin, verifyAuth, verifyPermission };

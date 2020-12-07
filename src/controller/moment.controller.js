@@ -22,7 +22,6 @@ class MomentController {
   async detail(ctx, next) {
     //1.获取momentId
     const momentId = ctx.params.momentId;
-    console.log(momentId);
     //2.查询数据库
     const result = await service.getMomentById(momentId);
     ctx.body = {
@@ -37,7 +36,7 @@ class MomentController {
   }
 
   /* 
-    查看多条动态
+    查看动态列表
   */
   async list(ctx, next) {
     //1.获取分页
@@ -45,6 +44,43 @@ class MomentController {
     //2.查询数据库
     const result = await service.getMomentList(offset, size);
 
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: result,
+        message: "操作成功",
+      },
+    };
+  }
+
+  /* 
+    修改动态
+  */
+  async update(ctx, next) {
+    console.log("我是update");
+    const { momentId } = ctx.params;
+    const { content } = ctx.request.body;
+    const result = await service.updateMoment(content, momentId);
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: result,
+        message: "操作成功",
+      },
+    };
+  }
+
+  /* 
+    删除动态
+  */
+  async remove(ctx, next) {
+    console.log("我是remove");
+    const { momentId } = ctx.params;
+    const result = await service.removeMoment(momentId);
     ctx.body = {
       status: 200,
       msg: "success",

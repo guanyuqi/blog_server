@@ -24,8 +24,11 @@ class CommentController {
     };
   }
 
+  /* 
+    获取评论
+  */
   async list(ctx, next) {
-    console.log("你看你妈呢");
+    console.log("获取评论");
     const momentId = ctx.params.momentId;
 
     //2.查询数据库

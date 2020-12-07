@@ -24,6 +24,10 @@ const errorHandle = (error, ctx) => {
       status = 401;
       message = "token失效,请重新登录";
       break;
+    case errorTypes.UNAUTHORIZATION:
+      status = 401;
+      message = "验证失败,你没有这个权限";
+      break;
     default:
       status = 404;
       message = "未知错误";
