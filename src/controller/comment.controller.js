@@ -7,12 +7,70 @@ class CommentController {
   async create(ctx, next) {
     //1.获取数据
     const userID = ctx.user.id;
-    const momentId = ctx.params.momentId;
-    const content = ctx.request.body.content;
-    console.log(ctx.request.body);
+    const { content, momentId } = ctx.request.body;
 
     //2.插入数据库
     const result = await service.create(userID, momentId, content);
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: result,
+        message: "操作成功",
+      },
+    };
+  }
+
+  /* 
+    回复评论
+  */
+  async reply(ctx, next) {
+    //1.获取数据
+    const userID = ctx.user.id;
+    const { content, momentId } = ctx.request.body;
+    const { commentId } = ctx.params;
+    //2.插入数据库
+    const result = await service.reply(userID, momentId, commentId, content);
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: result,
+        message: "操作成功",
+      },
+    };
+  }
+
+  /* 
+    修改评论
+  */
+  async update(ctx, next) {
+    //1.获取数据
+    const { content } = ctx.request.body;
+    const { commentId } = ctx.params;
+    //2.插入数据库
+    const result = await service.update(content, commentId);
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        data: result,
+        message: "操作成功",
+      },
+    };
+  }
+
+  /* 
+    删除评论
+  */
+  async remove(ctx, next) {
+    //1.获取数据
+    const { commentId } = ctx.params;
+    //2.插入数据库
+    const result = await service.remove(commentId);
     ctx.body = {
       status: 200,
       msg: "success",

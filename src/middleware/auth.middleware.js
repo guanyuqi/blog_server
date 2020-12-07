@@ -64,16 +64,23 @@ const verifyAuth = async (ctx, next) => {
  *   修改权限的验证
  */
 const verifyPermission = async (ctx, next) => {
-  console.log("进入修改权限的验证中间件");
-  const { id } = ctx.user;
-  const { momentId } = ctx.params;
+  const [resouceKey] = Object.keys(ctx.params);
+  const tabaleName = resouceKey.replace("Id", "");
+  const id = ctx.params[resouceKey];
+  const userId = ctx.user.id;
+  console.log("进入修改权限的验证中间件", userId);
   try {
-    const isPermission = await authService.checkMoment(momentId, id);
+    const isPermission = await authService.checkResource(
+      tabaleName,
+      id,
+      userId
+    );
     if (!isPermission) throw new Error();
   } catch (err) {
     const error = new Error(errorTypes.UNAUTHORIZATION);
     return ctx.app.emit("error", error, ctx);
   }
+  console.log("通过了操作权限验证");
   await next();
 };
 
