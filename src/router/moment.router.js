@@ -4,12 +4,14 @@ const {
   verifyAuth,
   verifyPermission,
 } = require("../middleware/auth.middleware");
+const { verifyLabelExists } = require("../middleware/label.middleware");
 const {
   create,
   detail,
   list,
   update,
   remove,
+  addLabels,
 } = require("../controller/moment.controller");
 const momentRouter = new Router({ prefix: "/moment" });
 
@@ -22,4 +24,14 @@ momentRouter.get("/", list);
 momentRouter.patch("/:momentId", verifyAuth, verifyPermission, update);
 //删除
 momentRouter.delete("/:momentId", verifyAuth, verifyPermission, remove);
+
+//添加标签
+momentRouter.post(
+  "/:momentId/labels",
+  verifyAuth,
+  verifyPermission,
+  verifyLabelExists,
+  addLabels
+);
+
 module.exports = momentRouter;

@@ -91,6 +91,28 @@ class MomentController {
       },
     };
   }
+
+  /* 
+    添加标签
+  */
+  async addLabels(ctx, next) {
+    console.log("我是addLables");
+    const { momentId } = ctx.params;
+    const { labels } = ctx.request.body;
+    console.log(momentId);
+    console.log(labels);
+
+    /* const result = await service.removeMoment(momentId);
+  ctx.body = {
+    status: 200,
+    msg: "success",
+    data: {
+      code: 1,
+      data: result,
+      message: "操作成功",
+    },
+  }; */
+  }
 }
 
 module.exports = new MomentController();
