@@ -87,8 +87,7 @@ class CommentController {
   */
   async list(ctx, next) {
     console.log("获取评论");
-    const momentId = ctx.params.momentId;
-
+    const { momentId } = ctx.query;
     //2.查询数据库
     const result = await service.getComments(momentId);
     ctx.body = {

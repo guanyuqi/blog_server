@@ -21,7 +21,7 @@ commentRouter.post("/:commentId/reply", verifyAuth, reply);
 commentRouter.patch("/:commentId", verifyAuth, verifyPermission, update);
 /* 删除评论 */
 commentRouter.delete("/:commentId", verifyAuth, verifyPermission, remove);
-
-commentRouter.get("/:momentId", list);
+/* 获取评论 */
+commentRouter.get("/", list);
 
 module.exports = commentRouter;
