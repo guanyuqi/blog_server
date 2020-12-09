@@ -14,11 +14,26 @@ class LabelService {
     return result[0];
   }
 
+  /* 
+  标签是否存在
+   */
   async isExistLabel(name) {
     try {
       const statement = `SELECT * FROM label WHERE name = ?`;
       const result = await connection.execute(statement, [name]);
-      console.log("查询存在得length", result[0].length);
+      return result[0];
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  /* 
+    获取标签列表
+   */
+  async list(limit, offset) {
+    try {
+      const statement = `SELECT * FROM label limit?,?`;
+      const result = await connection.execute(statement, [limit, offset]);
       return result[0];
     } catch (error) {
       console.log(error);

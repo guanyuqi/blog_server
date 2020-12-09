@@ -43,7 +43,6 @@ class MomentController {
     const { offset, size } = ctx.query;
     //2.查询数据库
     const result = await service.getMomentList(offset, size);
-
     ctx.body = {
       status: 200,
       msg: "success",
@@ -96,22 +95,31 @@ class MomentController {
     添加标签
   */
   async addLabels(ctx, next) {
+    //1.获取标签和动态ID
     console.log("我是addLables");
+    const labels = ctx.labels;
     const { momentId } = ctx.params;
-    const { labels } = ctx.request.body;
-    console.log(momentId);
     console.log(labels);
+    console.log("momentId", momentId);
 
-    /* const result = await service.removeMoment(momentId);
-  ctx.body = {
-    status: 200,
-    msg: "success",
-    data: {
-      code: 1,
-      data: result,
-      message: "操作成功",
-    },
-  }; */
+    //2.遍历标签
+    for (let label of labels) {
+      //2.1判断标签和动态是否已有关系
+      let labelId = label.id;
+      const result = await service.hasLabel(momentId, labelId);
+      if (result.length === 0) {
+        await service.addLabel(momentId, labelId);
+      }
+    }
+
+    ctx.body = {
+      status: 200,
+      msg: "success",
+      data: {
+        code: 1,
+        message: "操作成功",
+      },
+    };
   }
 }
 

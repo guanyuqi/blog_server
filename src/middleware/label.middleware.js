@@ -10,20 +10,19 @@ const verifyLabelExists = async (ctx, next) => {
   //1.获取标签
   console.log("进入验证标签");
   const { labels } = ctx.request.body;
+  let labelResult = [];
   for (let i of labels) {
-    let label;
     const result = await labelService.isExistLabel(i);
     if (result.length === 0) {
       const createResult = await labelService.create(i);
-      console.log();
-      label = { id: createResult.insertId, name: i };
+      labelResult.push({ id: createResult.insertId, name: i });
     } else {
-      label = { id: result[0].id, name: result[0].name };
+      labelResult.push({ id: result[0].id, name: result[0].name });
     }
-    console.log(label);
   }
-  console.log("over");
-  /* await next(); */
+  ctx.labels = labelResult;
+
+  await next();
 };
 
 module.exports = { verifyLabelExists };
