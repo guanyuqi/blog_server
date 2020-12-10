@@ -3,7 +3,7 @@ const OSS = require("ali-oss");
 
 const client = new OSS({
   accessKeyId: "LTAI4GK73wiQRcotc2tRbzCb",
-  accessKeySecret: "PGIn7oaSr9YvwsFoxNl71vZAL572Op",
+  accessKeySecret: "",
   bucket: "byhub",
   region: "oss-cn-beijing",
 });
