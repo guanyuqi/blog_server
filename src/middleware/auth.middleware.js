@@ -15,7 +15,7 @@ const { PUBLIC_KEY } = require("../app/config");
  */
 const verifyLogin = async (ctx, next) => {
   //1.获取用户名和密码
-  const { name, password } = ctx.request.body;
+  const { name, password } = ctx.request.fields;
 
   //2.判断用户名和密码是否正确
   if (!name || !password) {

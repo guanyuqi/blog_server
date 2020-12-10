@@ -6,7 +6,7 @@ class LabelController {
   */
   async create(ctx, next) {
     console.log("创建标签");
-    const { name } = ctx.request.body;
+    const { name } = ctx.request.fields;
     const result = await service.create(name);
     ctx.body = {
       status: 200,

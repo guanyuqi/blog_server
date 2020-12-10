@@ -7,11 +7,13 @@ class LabelService {
   */
   async create(name) {
     console.log("创建标签", name);
-    const statement = `INSERT INTO label (name) VALUES (?)`;
-    const result = await connection.execute(statement, [name]);
-    //将user插入数据库
-
-    return result[0];
+    try {
+      const statement = `INSERT INTO label (name) VALUES (?)`;
+      const result = await connection.execute(statement, [name]);
+      return result[0];
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /* 

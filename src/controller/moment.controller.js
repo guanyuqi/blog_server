@@ -7,7 +7,7 @@ class MomentController {
   async create(ctx, next) {
     //1.获取数据
     const userID = ctx.user.id;
-    const content = ctx.request.body.content;
+    const content = ctx.request.fields.content;
 
     //2.插入数据库
     const result = await service.create(userID, content);
@@ -60,7 +60,7 @@ class MomentController {
   async update(ctx, next) {
     console.log("我是update");
     const { momentId } = ctx.params;
-    const { content } = ctx.request.body;
+    const { content } = ctx.request.fields;
     const result = await service.updateMoment(content, momentId);
     ctx.body = {
       status: 200,

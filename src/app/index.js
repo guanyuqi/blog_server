@@ -1,5 +1,5 @@
 const Koa = require("koa");
-const bodyParser = require("koa-bodyparser");
+const body = require("koa-better-body");
 //引入错误处理
 const errorHandler = require("./error-handle");
 //路由引入
@@ -9,7 +9,7 @@ const app = new Koa();
 
 app.useRoutes = useRoutes;
 
-app.use(bodyParser());
+app.use(body());
 app.useRoutes();
 app.on("error", errorHandler);
 

@@ -1,24 +1,53 @@
 const path = require("path");
-const OSS = require("ali-oss");
+const fs = require("fs");
 
-const client = new OSS({
-  accessKeyId: "LTAI4GK73wiQRcotc2tRbzCb",
-  accessKeySecret: "PGIn7oaSr9YvwsFoxNl71vZAL572Op",
-  bucket: "byhub",
-  region: "oss-cn-beijing",
-});
+const handleContentType = require("../utils/handle-contentType");
+
+const handler = require("../cos/cos.uploader");
 
 class UploadController {
+  /* 上传头像 */
   async avatar(ctx, next) {
-    console.log("这是头像");
-    const url = path.resolve(__dirname, "./t.png");
     try {
-      let result = await client.put(`/avatar/${ctx.user.name}/avatar.png`, url);
+      console.log("这是头像");
+      let file = ctx.request.files[0];
+      let contentType = handleContentType(file.name.split(".")[1]);
 
-      ctx.body = result.res;
-      console.log(
-        `https://byhub.oss-accelerate.aliyuncs.com/avatar/${ctx.user.name}/avatar.png`
+      let newFilename = ctx.user.name + "." + file.name.split(".")[1];
+      let upStream = fs.createReadStream(file.path);
+      const result = await handler.uploadAvatar(
+        upStream,
+        newFilename,
+        contentType
       );
+      ctx.body = result;
+    } catch (error) {
+      console.log(error);
+    }
+
+    /* try {
+      const result = await handler.uploadAvatar(ctx.request.files[0]);
+      ctx.body = result;
+    } catch (error) {
+      console.log(error);
+    } */
+  }
+
+  /* 上传图片 */
+  async image(ctx, next) {
+    try {
+      console.log("上传图片");
+      let file = ctx.request.files[0];
+      let contentType = handleContentType(file.name.split(".")[1]);
+      let newFilename =
+        new Date().getTime() + ctx.user.name + "." + file.name.split(".")[1];
+      let upStream = fs.createReadStream(file.path);
+      const result = await handler.uploadAvatar(
+        upStream,
+        newFilename,
+        contentType
+      );
+      ctx.body = result;
     } catch (error) {
       console.log(error);
     }

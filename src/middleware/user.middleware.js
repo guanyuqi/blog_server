@@ -10,7 +10,7 @@ const md5password = require("../utils/password-handle");
  */
 const verifyUser = async (ctx, next) => {
   //1.获取用户名和密码
-  const { name, password } = ctx.request.body;
+  const { name, password } = ctx.request.fields;
   //2.判断用户名和密码是否正确
   if (!name || !password) {
     //发送错误信息
@@ -31,8 +31,8 @@ const verifyUser = async (ctx, next) => {
  *   密码加密
  */
 const handlePassword = async (ctx, next) => {
-  let { password } = ctx.request.body;
-  ctx.request.body.password = md5password(password);
+  let { password } = ctx.request.fields;
+  ctx.request.fields.password = md5password(password);
   await next();
 };
 
