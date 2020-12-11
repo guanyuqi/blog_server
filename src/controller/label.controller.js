@@ -9,13 +9,9 @@ class LabelController {
     const { name } = ctx.request.fields;
     const result = await service.create(name);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -26,13 +22,9 @@ class LabelController {
     const { limit, offset } = ctx.query;
     const result = await service.list(limit, offset);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 }

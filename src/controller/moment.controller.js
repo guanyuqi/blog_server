@@ -23,13 +23,13 @@ class MomentController {
     //1.获取momentId
     const momentId = ctx.params.momentId;
     //2.查询数据库
-    const result = await service.getMomentById(momentId);
+    const moment = await service.getMomentById(momentId);
     ctx.body = {
       status: 200,
       msg: "success",
       data: {
-        code: 1,
-        data: result,
+        code: 0,
+        data: { moment },
         message: "操作成功",
       },
     };
@@ -42,15 +42,11 @@ class MomentController {
     //1.获取分页
     const { offset, size } = ctx.query;
     //2.查询数据库
-    const result = await service.getMomentList(offset, size);
+    const momentList = await service.getMomentList(offset, size);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { momentList },
+      message: "操作成功",
     };
   }
 
@@ -63,13 +59,9 @@ class MomentController {
     const { content } = ctx.request.fields;
     const result = await service.updateMoment(content, momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -81,13 +73,9 @@ class MomentController {
     const { momentId } = ctx.params;
     const result = await service.removeMoment(momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -113,12 +101,9 @@ class MomentController {
     }
 
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 }

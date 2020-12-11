@@ -8,13 +8,9 @@ class UserController {
     const result = await service.create(user);
     //返回数据
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "注册成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 }

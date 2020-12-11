@@ -72,13 +72,9 @@ class CommentController {
     //2.插入数据库
     const result = await service.remove(commentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -91,13 +87,9 @@ class CommentController {
     //2.查询数据库
     const result = await service.getComments(momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 }

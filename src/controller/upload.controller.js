@@ -25,7 +25,11 @@ class UploadController {
         avatarResult.Location,
         ctx.user.id
       );
-      ctx.body = result;
+      ctx.body = {
+        code: 0,
+        data: { result },
+        message: "操作成功",
+      };
     } catch (error) {
       console.log(error);
     }
