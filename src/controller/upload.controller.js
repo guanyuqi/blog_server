@@ -29,13 +29,6 @@ class UploadController {
     } catch (error) {
       console.log(error);
     }
-
-    /* try {
-      const result = await handler.uploadAvatar(ctx.request.files[0]);
-      ctx.body = result;
-    } catch (error) {
-      console.log(error);
-    } */
   }
 
   /* 上传图片 */
