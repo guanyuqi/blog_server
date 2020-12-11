@@ -1,7 +1,10 @@
 const COS = require("cos-nodejs-sdk-v5");
+
+const config = require("../app/config");
+
 const cos = new COS({
-  SecretId: "AKIDg9OktsbFcqsgH9v8F9FC1cHhtog3xF72",
-  SecretKey: "zpJWWI4ZHBqKbjdXFpGiw4BJCl6Dwqa3",
+  SecretId: config.SECRET_ID,
+  SecretKey: config.SECRET_KEY,
 });
 
 class CosHandler {
@@ -22,7 +25,9 @@ class CosHandler {
       );
     });
   }
-
+  /* 
+  上传头像
+   */
   uploadAvatar(file, name, contentType) {
     return new Promise((resolve, reject) => {
       cos.putObject(
@@ -33,9 +38,6 @@ class CosHandler {
           StorageClass: "STANDARD",
           Body: file, // 上传文件对象,
           Headers: { "Content-Type": contentType },
-          onProgress: function (progressData) {
-            console.log(JSON.stringify(progressData));
-          },
         },
         function (err, data) {
           if (!err) {

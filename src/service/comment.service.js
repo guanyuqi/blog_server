@@ -57,7 +57,7 @@ class CommentService {
     const statement = `
       SELECT 
       	c.id,c.content,c.comment_id comentId,c.createAt createTime,
-      	JSON_OBJECT('id', u.id, 'name', u.name) user
+      	JSON_OBJECT('id', u.id, 'name', u.name,'avatar',u.avatar) user
       FROM comment c 
       LEFT JOIN byusers u ON c.user_id = u.id
       WHERE moment_id = ?

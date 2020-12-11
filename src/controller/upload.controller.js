@@ -4,21 +4,26 @@ const fs = require("fs");
 const handleContentType = require("../utils/handle-contentType");
 
 const handler = require("../cos/cos.uploader");
-
+const service = require("../service/user.service");
 class UploadController {
   /* 上传头像 */
   async avatar(ctx, next) {
     try {
+      //  1.上传图片到COS
       console.log("这是头像");
       let file = ctx.request.files[0];
       let contentType = handleContentType(file.name.split(".")[1]);
-
       let newFilename = ctx.user.name + "." + file.name.split(".")[1];
       let upStream = fs.createReadStream(file.path);
-      const result = await handler.uploadAvatar(
+      const avatarResult = await handler.uploadAvatar(
         upStream,
         newFilename,
         contentType
+      );
+      console.log(avatarResult.Location);
+      const result = await service.addAvatar(
+        avatarResult.Location,
+        ctx.user.id
       );
       ctx.body = result;
     } catch (error) {
@@ -37,6 +42,7 @@ class UploadController {
   async image(ctx, next) {
     try {
       console.log("上传图片");
+      //  1.上传图片到COS
       let file = ctx.request.files[0];
       let contentType = handleContentType(file.name.split(".")[1]);
       let newFilename =
@@ -47,7 +53,7 @@ class UploadController {
         newFilename,
         contentType
       );
-      ctx.body = result;
+      console.log(result.Location);
     } catch (error) {
       console.log(error);
     }
