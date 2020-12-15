@@ -38,7 +38,6 @@ const verifyLogin = async (ctx, next) => {
     const error = new Error(errorTypes.PASSWORD_EEROR);
     return ctx.app.emit("error", error, ctx);
   }
-  console.log("有你这个人 算你通过把");
   ctx.user = user;
   await next();
 };

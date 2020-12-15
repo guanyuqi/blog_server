@@ -36,24 +36,25 @@ class UploadController {
   }
 
   /* 上传图片 */
-  async image(ctx, next) {
-    try {
-      console.log("上传图片");
-      //  1.上传图片到COS
-      let file = ctx.request.files[0];
-      let contentType = handleContentType(file.name.split(".")[1]);
-      let newFilename =
-        new Date().getTime() + ctx.user.name + "." + file.name.split(".")[1];
-      let upStream = fs.createReadStream(file.path);
-      const result = await handler.uploadAvatar(
-        upStream,
-        newFilename,
-        contentType
-      );
-      console.log(result.Location);
-    } catch (error) {
-      console.log(error);
-    }
+  async uploadImage(ctx, next) {
+    console.log("进入上传头像");
+    console.log(ctx.request.files);
+    let file = ctx.request.files[0];
+    let contentType = handleContentType(file.name.split(".")[1]);
+    let newFilename =
+      ctx.user.name + new Date().getTime() + "." + file.name.split(".")[1];
+    let upStream = fs.createReadStream(file.path);
+    const uploadResult = await handler.uploadImage(
+      upStream,
+      newFilename,
+      contentType
+    );
+
+    ctx.body = {
+      code: 0,
+      data: { uploadResult },
+      message: "操作成功",
+    };
   }
 }
 

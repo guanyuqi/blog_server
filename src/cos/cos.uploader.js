@@ -49,6 +49,31 @@ class CosHandler {
       );
     });
   }
+
+  /* 
+  上传图片
+   */
+  uploadImage(file, name, contentType) {
+    return new Promise((resolve, reject) => {
+      cos.putObject(
+        {
+          Bucket: "byhub-1259170065" /* 必须 */,
+          Region: "ap-chengdu" /* 必须 */,
+          Key: `image/${name}` /* 必须 */,
+          StorageClass: "STANDARD",
+          Body: file, // 上传文件对象,
+          Headers: { "Content-Type": contentType },
+        },
+        function (err, data) {
+          if (!err) {
+            resolve(data);
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  }
 }
 
 module.exports = new CosHandler();

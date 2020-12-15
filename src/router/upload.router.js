@@ -10,11 +10,11 @@ const {
   verifyPermission,
 } = require("../middleware/auth.middleware");
 
-const { avatar } = require("../controller/upload.controller");
+const { avatar, uploadImage } = require("../controller/upload.controller");
 
 const uploadRouter = new Router({ prefix: "/upload" });
 
 uploadRouter.post("/avatar", verifyAuth, avatar);
-uploadRouter.post("/img", verifyAuth, avatar);
+uploadRouter.post("/img", verifyAuth, uploadImage);
 
 module.exports = uploadRouter;

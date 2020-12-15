@@ -8,10 +8,11 @@ class MomentController {
     //1.获取数据
     console.log("创建动态");
     const userID = ctx.user.id;
-    const { title, content } = ctx.request.fields;
-    console.log(userID, title, content);
+    console.log(ctx.request.fields);
+    const { title, content, coverImg } = ctx.request.fields;
+
     //2.插入数据库
-    const result = await service.create(userID, title, content);
+    const result = await service.create(userID, title, content, coverImg);
     ctx.body = {
       code: 0,
       data: { result },
@@ -86,8 +87,6 @@ class MomentController {
     console.log("我是addLables");
     const labels = ctx.labels;
     const { momentId } = ctx.params;
-    console.log(labels);
-    console.log("momentId", momentId);
 
     //2.遍历标签
     for (let label of labels) {
@@ -101,7 +100,6 @@ class MomentController {
 
     ctx.body = {
       code: 0,
-      data: { result },
       message: "操作成功",
     };
   }
