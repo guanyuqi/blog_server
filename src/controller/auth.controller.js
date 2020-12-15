@@ -7,15 +7,15 @@ class AuthController {
     登录
   */
   async login(ctx, next) {
-    const { name, id } = ctx.user;
+    const { name, id, avatar } = ctx.user;
     const token = jwt.sign({ name, id }, PRIVATE_KEY, {
-      expiresIn: 60 * 60 * 24,
+      expiresIn: "7d",
       algorithm: "RS256",
     });
 
     ctx.body = {
       code: 0,
-      data: { result },
+      data: { token, name, id, avatar },
       message: "操作成功",
     };
   }

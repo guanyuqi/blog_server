@@ -14,6 +14,8 @@ const { PUBLIC_KEY } = require("../app/config");
  *   用户验证
  */
 const verifyLogin = async (ctx, next) => {
+  console.log("进入用户验证");
+
   //1.获取用户名和密码
   const { name, password } = ctx.request.fields;
 
@@ -36,6 +38,7 @@ const verifyLogin = async (ctx, next) => {
     const error = new Error(errorTypes.PASSWORD_EEROR);
     return ctx.app.emit("error", error, ctx);
   }
+  console.log("有你这个人 算你通过把");
   ctx.user = user;
   await next();
 };
@@ -44,17 +47,21 @@ const verifyLogin = async (ctx, next) => {
  *   token验证
  */
 const verifyAuth = async (ctx, next) => {
-  console.log("进入权限中间件");
+  console.log("进入token权限中间件");
+
   try {
     const authorization = ctx.headers.authorization;
-
     const token = authorization.replace("Bearer ", "");
     const result = jwt.verify(token, PUBLIC_KEY, {
       algorithms: ["RS256"],
     });
+    console.log(result);
     ctx.user = result;
+    console.log(result);
     await next();
-  } catch {
+  } catch (err) {
+    console.log(err);
+    console.log("token验证失败123");
     let error = new Error(errorTypes.TOKEN_INVALID);
     return ctx.app.emit("error", error, ctx);
   }
@@ -64,11 +71,12 @@ const verifyAuth = async (ctx, next) => {
  *   修改权限的验证
  */
 const verifyPermission = async (ctx, next) => {
+  console.log("进入修改权限的验证中间件", ctx.user.id);
   const [resouceKey] = Object.keys(ctx.params);
   const tabaleName = resouceKey.replace("Id", "");
   const id = ctx.params[resouceKey];
   const userId = ctx.user.id;
-  console.log("进入修改权限的验证中间件", userId);
+
   try {
     const isPermission = await authService.checkResource(
       tabaleName,

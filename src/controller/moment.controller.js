@@ -6,13 +6,16 @@ class MomentController {
   */
   async create(ctx, next) {
     //1.获取数据
+    console.log("创建动态");
     const userID = ctx.user.id;
-    const content = ctx.request.fields.content;
-
+    const { title, content } = ctx.request.fields;
+    console.log(userID, title, content);
     //2.插入数据库
-    const result = await service.create(userID, content);
+    const result = await service.create(userID, title, content);
     ctx.body = {
-      result,
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -25,13 +28,9 @@ class MomentController {
     //2.查询数据库
     const moment = await service.getMomentById(momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 0,
-        data: { moment },
-        message: "操作成功",
-      },
+      code: 0,
+      data: { moment },
+      message: "操作成功",
     };
   }
 

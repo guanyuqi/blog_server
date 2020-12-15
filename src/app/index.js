@@ -7,10 +7,14 @@ const errorHandler = require("./error-handle");
 const useRoutes = require("../router");
 
 const app = new Koa();
-app.use(cors());
-app.useRoutes = useRoutes;
+app.use(
+  cors({
+    methods: ["GET", "POST", "DELETE", "PATCH"],
+  })
+);
 
 app.use(body());
+app.useRoutes = useRoutes;
 app.useRoutes();
 app.on("error", errorHandler);
 

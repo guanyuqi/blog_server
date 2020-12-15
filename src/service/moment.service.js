@@ -5,9 +5,13 @@ class MomentService {
   /* 
     创建动态
   */
-  async create(userId, content) {
-    const statement = `INSERT INTO moment (content, user_id) VALUES (?,?);`;
-    const result = await connection.execute(statement, [content, userId]);
+  async create(userID, title, content) {
+    const statement = `INSERT INTO moment (user_id,title,content) VALUES (?,?,?);`;
+    const result = await connection.execute(statement, [
+      userID,
+      title,
+      content,
+    ]);
     //将user插入数据库
     return result[0];
   }
@@ -18,7 +22,7 @@ class MomentService {
   async getMomentById(momentId) {
     const statement = `
     SELECT 
-      m.id id, m.content content, m.createAt createTime, m.updateAt updateTime,
+      m.id id,m.title title, m.content content, m.createAt createTime, m.updateAt updateTime,
       JSON_OBJECT('id', u.id, 'name', u.name,'avatar',u.avatar) user,
       IF(COUNT(l.id),JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)), NULL) labels,
       IF(COUNT(c.id),JSON_ARRAYAGG(
@@ -45,7 +49,7 @@ class MomentService {
   async getMomentList(offset, size) {
     const statement = `
     SELECT 
-      m.id id, m.content content, m.createAt createTime, m.updateAt updateTime,
+      m.id id,m.title title, m.content content, m.createAt createTime, m.updateAt updateTime,
       JSON_OBJECT('id', u.id, 'name', u.name,'avatar',u.avatar) auchor,
       IF(COUNT(l.id),JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)),NULL) labels,
       (SELECT COUNT(*) FROM comment c WHERE c.moment_id = m.id) commentCount
