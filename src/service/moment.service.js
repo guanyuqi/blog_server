@@ -25,10 +25,7 @@ class MomentService {
     SELECT 
       m.id id,m.title title, m.content content,m.cover_img coverImg, m.createAt createTime, m.updateAt updateTime,
       JSON_OBJECT('id', u.id, 'name', u.name,'avatar',u.avatar) user,
-      IF(COUNT(l.id),JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)), NULL) labels,
-      IF(COUNT(c.id),JSON_ARRAYAGG(
-        JSON_OBJECT('id', c.id, 'content', c.content, 'commentId', c.comment_id, 
-                    'user', JSON_OBJECT('id', cu.id, 'name', cu.name,'avatar',cu.avatar))), NULL) comments
+      IF(COUNT(l.id),JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)), NULL) labels
     FROM moment m
     LEFT JOIN byusers u ON m.user_id = u.id
     LEFT JOIN comment c ON c.moment_id = m.id

@@ -13,7 +13,7 @@ const {
 } = require("../controller/comment.controller");
 const commentRouter = new Router({ prefix: "/comment" });
 
-/* 创建评论 */
+/* 发表评论 */
 commentRouter.post("/", verifyAuth, create);
 /* 回复评论 */
 commentRouter.post("/:commentId/reply", verifyAuth, reply);
@@ -22,6 +22,6 @@ commentRouter.patch("/:commentId", verifyAuth, verifyPermission, update);
 /* 删除评论 */
 commentRouter.delete("/:commentId", verifyAuth, verifyPermission, remove);
 /* 获取评论 */
-commentRouter.get("/", list);
+commentRouter.get("/:momentId", list);
 
 module.exports = commentRouter;

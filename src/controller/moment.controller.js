@@ -21,7 +21,7 @@ class MomentController {
   }
 
   /* 
-    查看动态
+    查看单条动态
   */
   async detail(ctx, next) {
     //1.获取momentId
@@ -30,7 +30,7 @@ class MomentController {
     const moment = await service.getMomentById(momentId);
     ctx.body = {
       code: 0,
-      data: { moment },
+      data: { moment: moment[0] },
       message: "操作成功",
     };
   }
