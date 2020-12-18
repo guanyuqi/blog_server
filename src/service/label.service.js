@@ -32,10 +32,13 @@ class LabelService {
   /* 
     获取标签列表
    */
-  async list(limit, offset) {
+  async list() {
     try {
-      const statement = `SELECT * FROM label limit?,?`;
-      const result = await connection.execute(statement, [limit, offset]);
+      const statement = `SELECT l.id,l.name ,COUNT(l.id) count FROM label l
+      LEFT JOIN moment_label ml
+      ON ml.label_id = l.id 
+      GROUP BY l.id `;
+      const result = await connection.execute(statement);
       return result[0];
     } catch (error) {
       console.log(error);

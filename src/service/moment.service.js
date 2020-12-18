@@ -45,24 +45,31 @@ class MomentService {
     查看多条动态
   */
   async getMomentList(offset, size) {
-    const statement = `
-    SELECT 
-      m.id id,m.title title, m.content content,m.cover_img coverImg, m.createAt createTime, m.updateAt updateTime,
-      JSON_OBJECT('id', u.id, 'name', u.name,'avatar',u.avatar) auchor,
-      IF(COUNT(l.id),JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)),NULL) labels,
-      (SELECT COUNT(*) FROM comment c WHERE c.moment_id = m.id) commentCount
-    FROM moment m 
-    LEFT JOIN byusers u 
-    ON m.user_id = u.id
-    LEFT JOIN moment_label ml 
-    ON m.id = ml.moment_id
-    LEFT JOIN label l 
-    ON ml.label_id = l.id
-    GROUP BY m.id 
-    ORDER BY m.id DESC
-    LIMIT ?,?;`;
-    const result = await connection.execute(statement, [offset, size]);
-    return result[0];
+    try {
+      const statement = `
+      SELECT 
+        m.id id,m.title title, m.content content,m.cover_img coverImg, m.createAt createTime, m.updateAt updateTime,
+        JSON_OBJECT('id', u.id, 'name', u.name,'avatar',u.avatar) auchor,
+        IF(COUNT(l.id),JSON_ARRAYAGG(JSON_OBJECT('id', l.id, 'name', l.name)),NULL) labels,
+        (SELECT COUNT(*) FROM comment c WHERE c.moment_id = m.id) commentCount
+      FROM moment m 
+      LEFT JOIN byusers u 
+      ON m.user_id = u.id
+      LEFT JOIN moment_label ml 
+      ON m.id = ml.moment_id
+      LEFT JOIN label l 
+      ON ml.label_id = l.id
+      GROUP BY m.id 
+      ORDER BY m.id DESC
+      LIMIT ?,?;`;
+      const result = await connection.execute(statement, [offset, size]);
+
+      const countStatement = "SELECT COUNT(*) count from moment";
+      const countResult = await connection.execute(countStatement);
+      return { momentList: result[0], count: countResult[0][0].count };
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   /* 

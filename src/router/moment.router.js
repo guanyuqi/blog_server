@@ -23,7 +23,7 @@ momentRouter.get("/", list);
 //修改
 momentRouter.patch("/:momentId", verifyAuth, verifyPermission, update);
 //删除
-momentRouter.delete("/:momentId", verifyAuth, verifyPermission, remove);
+momentRouter.post("/delete/:momentId", verifyAuth, verifyPermission, remove);
 
 //添加标签
 momentRouter.post(

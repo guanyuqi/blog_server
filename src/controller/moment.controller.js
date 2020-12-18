@@ -8,7 +8,6 @@ class MomentController {
     //1.获取数据
     console.log("创建动态");
     const userID = ctx.user.id;
-    console.log(ctx.request.fields);
     const { title, content, coverImg } = ctx.request.fields;
 
     //2.插入数据库
@@ -42,10 +41,10 @@ class MomentController {
     //1.获取分页
     const { offset, size } = ctx.query;
     //2.查询数据库
-    const momentList = await service.getMomentList(offset, size);
+    const { momentList, count } = await service.getMomentList(offset, size);
     ctx.body = {
       code: 0,
-      data: { momentList },
+      data: { momentList, count },
       message: "操作成功",
     };
   }
