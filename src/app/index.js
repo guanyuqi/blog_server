@@ -10,10 +10,6 @@ const errorHandler = require("./error-handle");
 const useRoutes = require("../router");
 //https
 const sslify = require("koa-sslify").default;
-/* const options = {
-  key: fs.readFileSync("./ssl/ssl.key"),
-  cert: fs.readFileSync("./ssl/ssl.pem"),
-}; */
 const app = new Koa();
 
 app.use(sslify());
