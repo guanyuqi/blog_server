@@ -1,12 +1,22 @@
 const Koa = require("koa");
+const https = require("https");
+const fs = require("fs");
+
 const body = require("koa-better-body");
 const cors = require("koa2-cors");
 //引入错误处理
 const errorHandler = require("./error-handle");
 //路由引入
 const useRoutes = require("../router");
-
+//https
+const sslify = require("koa-sslify").default;
+/* const options = {
+  key: fs.readFileSync("./ssl/ssl.key"),
+  cert: fs.readFileSync("./ssl/ssl.pem"),
+}; */
 const app = new Koa();
+
+app.use(sslify());
 app.use(
   cors({
     methods: ["GET", "POST", "DELETE", "PATCH"],
