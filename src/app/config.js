@@ -19,6 +19,8 @@ module.exports = {
   MYSQL_DATABASE,
   MYSQL_ROOT,
   MYSQL_PASSWORD,
+  SECRET_ID,
+  SECRET_KEY,
 } = process.env;
 
 module.exports.PRIVATE_KEY = PRIVATE_KEY;

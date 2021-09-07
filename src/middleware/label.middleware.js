@@ -9,7 +9,7 @@ const labelService = require("../service/label.service");
 const verifyLabelExists = async (ctx, next) => {
   //1.获取标签
   console.log("进入验证标签");
-  const { labels } = ctx.request.body;
+  const { labels } = ctx.request.fields;
   let labelResult = [];
   for (let i of labels) {
     const result = await labelService.isExistLabel(i);

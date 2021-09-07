@@ -6,16 +6,12 @@ class LabelController {
   */
   async create(ctx, next) {
     console.log("创建标签");
-    const { name } = ctx.request.body;
+    const { name } = ctx.request.fields;
     const result = await service.create(name);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -23,16 +19,11 @@ class LabelController {
     获取标签
   */
   async getLabels(ctx, next) {
-    const { limit, offset } = ctx.query;
-    const result = await service.list(limit, offset);
+    const result = await service.list();
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 }

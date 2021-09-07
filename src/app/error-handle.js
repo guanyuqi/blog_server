@@ -32,10 +32,10 @@ const errorHandle = (error, ctx) => {
       status = 404;
       message = "未知错误";
   }
-  ctx.status = status;
+  ctx.status = 200;
   ctx.body = {
-    status: status,
-    errMsg: message,
+    code: status,
+    message: message,
   };
 };
 

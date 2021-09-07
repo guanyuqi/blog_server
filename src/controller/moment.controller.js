@@ -6,32 +6,31 @@ class MomentController {
   */
   async create(ctx, next) {
     //1.获取数据
+    console.log("创建动态");
     const userID = ctx.user.id;
-    const content = ctx.request.body.content;
+    const { title, content, coverImg } = ctx.request.fields;
 
     //2.插入数据库
-    const result = await service.create(userID, content);
+    const result = await service.create(userID, title, content, coverImg);
     ctx.body = {
-      result,
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
   /* 
-    查看动态
+    查看单条动态
   */
   async detail(ctx, next) {
     //1.获取momentId
     const momentId = ctx.params.momentId;
     //2.查询数据库
-    const result = await service.getMomentById(momentId);
+    const moment = await service.getMomentById(momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { moment: moment[0] },
+      message: "操作成功",
     };
   }
 
@@ -42,15 +41,11 @@ class MomentController {
     //1.获取分页
     const { offset, size } = ctx.query;
     //2.查询数据库
-    const result = await service.getMomentList(offset, size);
+    const { momentList, count } = await service.getMomentList(offset, size);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { momentList, count },
+      message: "操作成功",
     };
   }
 
@@ -60,16 +55,12 @@ class MomentController {
   async update(ctx, next) {
     console.log("我是update");
     const { momentId } = ctx.params;
-    const { content } = ctx.request.body;
+    const { content } = ctx.request.fields;
     const result = await service.updateMoment(content, momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -81,13 +72,9 @@ class MomentController {
     const { momentId } = ctx.params;
     const result = await service.removeMoment(momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -99,8 +86,6 @@ class MomentController {
     console.log("我是addLables");
     const labels = ctx.labels;
     const { momentId } = ctx.params;
-    console.log(labels);
-    console.log("momentId", momentId);
 
     //2.遍历标签
     for (let label of labels) {
@@ -113,12 +98,8 @@ class MomentController {
     }
 
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        message: "操作成功",
-      },
+      code: 0,
+      message: "操作成功",
     };
   }
 }

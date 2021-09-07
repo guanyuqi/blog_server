@@ -21,6 +21,17 @@ class UserService {
     //将user插入数据库
     return result[0];
   }
+
+  /* 
+  设置头像
+   */
+  async addAvatar(url, id) {
+    url = "https://" + url;
+    const statement = `UPDATE byusers  SET avatar = ? WHERE id=?;`;
+    const result = await connection.execute(statement, [url, id]);
+    //将user插入数据库
+    return result[0];
+  }
 }
 
 module.exports = new UserService();

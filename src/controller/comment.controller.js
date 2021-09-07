@@ -7,7 +7,7 @@ class CommentController {
   async create(ctx, next) {
     //1.获取数据
     const userID = ctx.user.id;
-    const { content, momentId } = ctx.request.body;
+    const { content, momentId } = ctx.request.fields;
 
     //2.插入数据库
     const result = await service.create(userID, momentId, content);
@@ -28,18 +28,14 @@ class CommentController {
   async reply(ctx, next) {
     //1.获取数据
     const userID = ctx.user.id;
-    const { content, momentId } = ctx.request.body;
+    const { content, momentId } = ctx.request.fields;
     const { commentId } = ctx.params;
     //2.插入数据库
     const result = await service.reply(userID, momentId, commentId, content);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -48,18 +44,14 @@ class CommentController {
   */
   async update(ctx, next) {
     //1.获取数据
-    const { content } = ctx.request.body;
+    const { content } = ctx.request.fields;
     const { commentId } = ctx.params;
     //2.插入数据库
     const result = await service.update(content, commentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -72,13 +64,9 @@ class CommentController {
     //2.插入数据库
     const result = await service.remove(commentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 
@@ -87,17 +75,13 @@ class CommentController {
   */
   async list(ctx, next) {
     console.log("获取评论");
-    const { momentId } = ctx.query;
+    const { momentId } = ctx.params;
     //2.查询数据库
     const result = await service.getComments(momentId);
     ctx.body = {
-      status: 200,
-      msg: "success",
-      data: {
-        code: 1,
-        data: result,
-        message: "操作成功",
-      },
+      code: 0,
+      data: { result },
+      message: "操作成功",
     };
   }
 }
